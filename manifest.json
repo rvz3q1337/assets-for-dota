@@ -46,7 +46,7 @@
     },
     {
       "path": "fonts/FontAwesomeEx Solid.otf",
-      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/fonts/FontAwesomeEx Solid.otf",
+      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/fonts/FontAwesomeEx%20Solid.otf",
       "sha256": "8f3ddf98cb664784aeabc9be3bf17efd126a21ab42bca1ebf7f73ac08820d296",
       "size": 930588
     },
@@ -70,13 +70,13 @@
     },
     {
       "path": "fonts/Museo Sans Cyrl 900.ttf",
-      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/fonts/Museo Sans Cyrl 900.ttf",
+      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/fonts/Museo%20Sans%20Cyrl%20900.ttf",
       "sha256": "fbdbadfdeca1d01a19b5f073088dcb77278a6999e114c2a0820ba4de562047da",
       "size": 126948
     },
     {
       "path": "fonts/MuseoSansEx 500.ttf",
-      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/fonts/MuseoSansEx 500.ttf",
+      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/fonts/MuseoSansEx%20500.ttf",
       "sha256": "fbeb6b5f764e6d3832e5ce92be1911e43afbe045bc902b15f4653e58e2c01015",
       "size": 126836
     },
