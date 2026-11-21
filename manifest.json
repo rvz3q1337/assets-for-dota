@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "repo": "rvz3q1337/assets-for-dota",
+  "files": [
+    {
+      "path": "dota/assets/hud_assets.bin",
+      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/dota/assets/hud_assets.bin",
+      "sha256": "a11094162900c813632dd9a5260f00eeb7e369ee3252c2bb53da70c9f034207b",
+      "size": 2156618
+    },
+    {
+      "path": "dota/assets/cosmetics_db.bin",
+      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/dota/assets/cosmetics_db.bin",
+      "sha256": "dbe44cf8c12ee459565190a92c00400e0f7258aaa97c83f20b054de9e69958c5",
+      "size": 22982
+    },
+    {
+      "path": "localizer/en.json",
+      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/localizer/en.json",
+      "sha256": "353bc5e4b445201442db9ad15dab50577b9eb220b5ae5675a746b922c0566857",
+      "size": 975
+    },
+    {
+      "path": "localizer/ru.json",
+      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/localizer/ru.json",
+      "sha256": "a984155053f96ab1e330f68953ad24b33de97d0629b1a69d7cfe8bce3ec5af7d",
+      "size": 1260
+    },
+    {
+      "path": "localizer/cn.json",
+      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/localizer/cn.json",
+      "sha256": "da78c857928ac64f920f9d7dca2f399ff06b7779f1a2268c1c7784d5b9193bf5",
+      "size": 1008
+    },
+    {
+      "path": "fonts/04b03.ttf",
+      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/fonts/04b03.ttf",
+      "sha256": "81126eb33bfeef91afd0b099cc75e6b25257e5eecf1f97f5b5335ff5c2fbf5e1",
+      "size": 19492
+    },
+    {
+      "path": "fonts/ArchivoBlack-Regular.ttf",
+      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/fonts/ArchivoBlack-Regular.ttf",
+      "sha256": "dd9a89a019b4849f66ab75455fe7bdf931311042cbb0f0f97acc061539703180",
+      "size": 90988
+    },
+    {
+      "path": "fonts/FontAwesomeEx Solid.otf",
+      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/fonts/FontAwesomeEx Solid.otf",
+      "sha256": "8f3ddf98cb664784aeabc9be3bf17efd126a21ab42bca1ebf7f73ac08820d296",
+      "size": 930588
+    },
+    {
+      "path": "fonts/Manrope-Regular.ttf",
+      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/fonts/Manrope-Regular.ttf",
+      "sha256": "c13b2a350de1825289fba522350defa40e6e6124caf3d18572ffd0a3b8cf0578",
+      "size": 97436
+    },
+    {
+      "path": "fonts/Manrope-SemiBold.ttf",
+      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/fonts/Manrope-SemiBold.ttf",
+      "sha256": "52836eb4e1f1112ea3b387a4e7a6c989a5235b42d9f4dd3ed45f6c923925a4ca",
+      "size": 97584
+    },
+    {
+      "path": "fonts/Manrope.ttf",
+      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/fonts/Manrope.ttf",
+      "sha256": "3ae11c49db0455a3cc33e37d380f20fdb8c7f8b41dc07625c177e3d87a9d6ae6",
+      "size": 164700
+    },
+    {
+      "path": "fonts/Museo Sans Cyrl 900.ttf",
+      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/fonts/Museo Sans Cyrl 900.ttf",
+      "sha256": "fbdbadfdeca1d01a19b5f073088dcb77278a6999e114c2a0820ba4de562047da",
+      "size": 126948
+    },
+    {
+      "path": "fonts/MuseoSansEx 500.ttf",
+      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/fonts/MuseoSansEx 500.ttf",
+      "sha256": "fbeb6b5f764e6d3832e5ce92be1911e43afbe045bc902b15f4653e58e2c01015",
+      "size": 126836
+    },
+    {
+      "path": "fonts/cjk.ttf",
+      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/fonts/cjk.ttf",
+      "sha256": "aa4560dd8fe5645745fed3ffa301c3ca4d6c03cbd738145b613303961ba733b8",
+      "size": 9753388
+    },
+    {
+      "path": "fonts/obs_icons.ttf",
+      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/fonts/obs_icons.ttf",
+      "sha256": "aec660afe35fa7d7686dae4eb2f36327cf12406605e187eb9db60c090b2bbcb7",
+      "size": 37944
+    },
+    {
+      "path": "fonts/segoeuiz.ttf",
+      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/fonts/segoeuiz.ttf",
+      "sha256": "45e7504e9bbd70ead482ebbddbeec04b2bea9f490b994658a95146cdf0733449",
+      "size": 541468
+    }
+  ]
+}
