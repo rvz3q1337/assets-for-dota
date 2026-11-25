@@ -15,40 +15,10 @@
       "size": 22982
     },
     {
-      "path": "dota/LUA_API.md",
-      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/dota/LUA_API.md",
-      "sha256": "d98c29ac2b9e3ed262ef4b5917412bf3bd2ea5abcf3e407841b3b1f425edcf63",
-      "size": 24263
-    },
-    {
       "path": "dota/Themes/kot.jpg",
       "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/dota/Themes/kot.jpg",
       "sha256": "a28058596f03fdf860c313cff9757fe7067f8b40fbb1da4425e123c5e759ef6c",
       "size": 24149
-    },
-    {
-      "path": "dota/scripts/auto_utility.lua",
-      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/dota/scripts/auto_utility.lua",
-      "sha256": "5ffa6f16db0308d2eee23c0a9d57086ace8f5d941b5aaaee3f03724afca3aa36",
-      "size": 10308
-    },
-    {
-      "path": "dota/scripts/skywrath_combo.lua",
-      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/dota/scripts/skywrath_combo.lua",
-      "sha256": "fd737ca24f52c9844654f5932d7c618945cb5acfbb0b8db52157dda5f5fccc39",
-      "size": 8013
-    },
-    {
-      "path": "dota/scripts/arc_rage_v55.lua",
-      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/dota/scripts/arc_rage_v55.lua",
-      "sha256": "6c46dd9f644cd16b13c417cd52128aca0ccf35098e30c15fcadde544a5a070c8",
-      "size": 365510
-    },
-    {
-      "path": "dota/scripts/auto_lasthit.lua",
-      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/dota/scripts/auto_lasthit.lua",
-      "sha256": "7175d159bf8921e7112bae37001c980dd6e5976e8a797d39fa6a95f99683bc72",
-      "size": 3563
     },
     {
       "path": "localizer/en.json",
@@ -137,8 +107,8 @@
     {
       "path": "dota/scripts/libs/abilities_db.lua",
       "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/dota/scripts/libs/abilities_db.lua",
-      "sha256": "cdebda037fcd8cb5f6c8f8463f220d89d796166fc5192127a549b57792f6b289",
-      "size": 147080
+      "sha256": "37a4a3801a1bd6ebcedbc1d295f495673ad7fdbd1f2885319f0e78588f10366c",
+      "size": 144669
     },
     {
       "path": "dota/scripts/libs/farm_nav.lua",
@@ -149,8 +119,8 @@
     {
       "path": "dota/scripts/libs/hero_state.lua",
       "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/dota/scripts/libs/hero_state.lua",
-      "sha256": "015ecf1b4c2da8d10eb67531144f8abe20c56665f795b48c7865423d72e94407",
-      "size": 6744
+      "sha256": "6af467ebd909067d592bb00b84ce6a715a2ccf699af2605781b515f29364be0d",
+      "size": 9765
     },
     {
       "path": "dota/scripts/libs/hud.lua",
@@ -173,14 +143,32 @@
     {
       "path": "dota/scripts/libs/orders.lua",
       "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/dota/scripts/libs/orders.lua",
-      "sha256": "1b174b039eb2de88371df327fbcf3991020ed0077f0f0c546b73ea6b971d1055",
-      "size": 3034
+      "sha256": "ffe17b9e0c7924a4c18c439f461a7ca30adfd58fdeb2b663c685e0ea61854cb0",
+      "size": 6037
     },
     {
       "path": "dota/scripts/libs/target_selector.lua",
       "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/dota/scripts/libs/target_selector.lua",
       "sha256": "6ba3d8c15e82154a4071c9af84cabc3f5d571c2bf9932c8c730e65a64b84289f",
       "size": 3138
+    },
+    {
+      "path": "dota/scripts/libs/floating_panel.lua",
+      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/dota/scripts/libs/floating_panel.lua",
+      "sha256": "1bd31c218e56b0b484aef66f0df71a0607cfe8de6c1ec390dca9c94c0d605c3c",
+      "size": 25089
+    },
+    {
+      "path": "dota/LUA_API.md",
+      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/dota/LUA_API.md",
+      "sha256": "55e591919016c939fb059c9eaca830388c6b0b7d43ca5c9b05a021d84582d412",
+      "size": 35703
+    },
+    {
+      "path": "dota/scripts/libs/damage_lib.lua",
+      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/dota/scripts/libs/damage_lib.lua",
+      "sha256": "a8f7957ed972c601262c2491b4a56446d273a75b17786eca40e6e782ae9b5e8b",
+      "size": 23277
     }
   ]
 }

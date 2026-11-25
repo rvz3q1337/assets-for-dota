@@ -13,6 +13,10 @@ local PAT_ROOTED     = { "rod_of_atos", "gungnir", "root", "ensnare", "frostbite
 local PAT_INVULN     = { "invulnerable", "eul_cyclone", "wind_waker", "invoker_tornado", "astral_imprisonment", "disruption", "phase_shift" }
 local PAT_BKB        = { "black_king_bar_immune", "blade_fury", "life_stealer_rage", "minotaur_horn" }
 local PAT_LIFT       = { "modifier_invoker_tornado", "modifier_eul_cyclone" }
+local PAT_INVIS      = { "invisible", "invis", "shadow_walk", "windwalk", "smoke_of_deceit", "glimmer_cape_fade", "silver_edge", "shadow_blade", "sand_storm", "permanent_invisibility" }
+local PAT_DISARM     = { "disarm", "halberd", "deafening_blast_disarm", "fates_edict" }
+local PAT_ETHEREAL   = { "ethereal", "ghost_state", "decrepify", "necrolyte_sadist_active" }
+local PAT_CHANNEL    = { "teleporting", "channel", "freezing_field", "black_hole", "fiends_grip", "death_ward", "sand_storm", "shackles", "dismember", "powershot", "illuminate", "epicenter" }
 
 function M.has_mod(unit, exact_name)
     if not unit or not unit.modifiers then return nil end
@@ -114,6 +118,79 @@ function M.is_muted(unit)       return M.has_mod_any(unit, PAT_MUTED) end
 function M.is_rooted(unit)      return M.has_mod_any(unit, PAT_ROOTED) end
 function M.is_invuln(unit)      return M.has_mod_any(unit, PAT_INVULN) end
 function M.is_bkb(unit)         return M.has_mod_any(unit, PAT_BKB) end
+function M.is_invis(unit)       return M.has_mod_any(unit, PAT_INVIS) end
+function M.is_disarmed(unit)    return M.has_mod_any(unit, PAT_DISARM) end
+function M.is_ethereal(unit)    return M.has_mod_any(unit, PAT_ETHEREAL) end
+function M.is_channeling(unit)  return (unit and unit.is_channeling == true) or M.has_mod_any(unit, PAT_CHANNEL) end
+
+function M.has_aegis(unit)
+    return M.get_item(unit, "item_aegis", false) ~= nil or M.has_mod(unit, "modifier_aegis_regen") ~= nil
+end
+
+function M.has_aghs(unit)
+    return M.get_item(unit, "item_ultimate_scepter", false) ~= nil
+        or M.has_mod(unit, "modifier_item_ultimate_scepter_consumed") ~= nil
+        or M.has_mod(unit, "modifier_item_ultimate_scepter") ~= nil
+end
+
+function M.has_shard(unit)
+    return M.has_mod(unit, "modifier_item_aghanims_shard") ~= nil
+end
+
+function M.get_item_any(unit, names, include_backpack)
+    if not unit or not names then return nil end
+    for _, name in ipairs(names) do
+        local it = M.get_item(unit, name, include_backpack)
+        if it then return it end
+    end
+    return nil
+end
+
+function M.find_empty_slot(unit, min_slot, max_slot)
+    if not unit then return nil end
+    local lo = min_slot or 0
+    local hi = max_slot or 5
+    local used = {}
+    if unit.items then
+        for _, it in ipairs(unit.items) do
+            if it.slot ~= nil then used[it.slot] = true end
+        end
+    end
+    for sl = lo, hi do
+        if not used[sl] then return sl end
+    end
+    return nil
+end
+
+function M.find_backpack_slot(unit)
+    return M.find_empty_slot(unit, 6, 8)
+end
+
+function M.is_enemy_nearby(me, radius, heroes)
+    if not me then return false end
+    local r2 = (radius or 1000) * (radius or 1000)
+    local list = heroes or (Heroes and Heroes.GetAll and Heroes.GetAll()) or {}
+    local mx, my = me.origin_x or 0, me.origin_y or 0
+    for _, h in ipairs(list) do
+        if h and h.is_enemy and h.is_alive and not h.is_illusion then
+            local dx = (h.origin_x or 0) - mx
+            local dy = (h.origin_y or 0) - my
+            if (dx * dx + dy * dy) <= r2 then return true end
+        end
+    end
+    return false
+end
+
+function M.phys_armor_mult(unit)
+    local a = (unit and tonumber(unit.armor)) or 0
+    return 1.0 - (0.06 * a) / (1.0 + 0.06 * math.abs(a))
+end
+
+function M.magic_resist_mult(unit)
+    local mr = (unit and tonumber(unit.magical_armor)) or 25.0
+    if mr > 1.0 then mr = mr * 0.01 end
+    return math.max(0.0, 1.0 - mr)
+end
 
 function M.has_linken(unit)
     if M.has_mod(unit, "modifier_item_sphere_target") or M.has_mod(unit, "modifier_special_bonus_spell_block") then

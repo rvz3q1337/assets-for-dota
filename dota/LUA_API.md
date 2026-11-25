@@ -69,8 +69,10 @@ local AbilDB    = require("abilities_db")
 - `HeroState.is_item_ready(unit, it)` — `bool`
 - `HeroState.cast_range_bonus(unit)` — суммарный бонус дальности каста от предметов (Aether Lens / Octarine / нейтралки)
 - `HeroState.hp_pct(unit)` / `HeroState.mana_pct(unit)` — процент HP / маны (`0..100`)
-- `HeroState.is_stunned(unit)` / `is_hexed(unit)` / `is_silenced(unit)` / `is_muted(unit)` / `is_rooted(unit)` / `is_invuln(unit)` / `is_bkb(unit)`
-- `HeroState.has_linken(unit)` / `HeroState.has_lotus(unit)`
+- `HeroState.is_stunned(unit)` / `is_hexed(unit)` / `is_silenced(unit)` / `is_muted(unit)` / `is_rooted(unit)` / `is_invuln(unit)` / `is_bkb(unit)` / `is_invis(unit)` / `is_disarmed(unit)` / `is_ethereal(unit)` / `is_channeling(unit)`
+- `HeroState.has_linken(unit)` / `has_lotus(unit)` / `has_aegis(unit)` / `has_aghs(unit)` / `has_shard(unit)`
+- `HeroState.get_item_any(unit, names, include_backpack)` / `find_empty_slot(unit, lo, hi)` / `find_backpack_slot(unit)`
+- `HeroState.is_enemy_nearby(me, radius, heroes)` / `phys_armor_mult(unit)` / `magic_resist_mult(unit)`
 - `HeroState.control_remaining(unit)` — оставшееся время контроля на юните (сек.)
 - `HeroState.lift_remaining(unit)` — оставшееся время lift/cyclone (сек.)
 - `HeroState.find_tempest_double(me, heroes)` — найти Tempest Double Arc Warden
@@ -90,8 +92,10 @@ local AbilDB    = require("abilities_db")
 Анти-спам обёртка над `Order.*` с троттлингом per-unit (`min_gap` сек.):
 - `Orders.can_send(unit_or_idx, min_gap)` — `bool`
 - `Orders.cast_target(unit, ab_idx, target, min_gap, queue)`
-- `Orders.cast_pos(unit, ab_idx, x, y, z, min_gap, queue)`
-- `Orders.cast_no_target(unit, ab_idx, min_gap, queue)`
+- `Orders.cast_pos(unit, ab_idx, x, y, z, min_gap, queue)` (автоматически уведомляет `Humanizer.PushOrderTarget`)
+- `Orders.cast_no_target(unit, ab_idx, min_gap, queue)` / `cast_toggle(unit, ab_idx, min_gap, queue)` / `cast_tree(unit, ab_idx, tree_id, min_gap, queue)`
+- `Orders.move_item(unit, item_idx, target_slot, min_gap, queue)` / `drop_item(unit, item_idx, x, y, z, min_gap, queue)` / `pickup_item(unit, world_item_idx, min_gap, queue)` / `pickup_rune(unit, rune_idx, min_gap, queue)` / `buy_item(unit, item_id, min_gap)`
+- `Orders.prepare(order_type, target_idx, x, y, z, ab_idx, issuer, unit_idx, queue, show_effects)`
 - `Orders.attack(unit, target, min_gap, queue)`
 - `Orders.attack_move(unit, x, y, z, min_gap, queue)`
 - `Orders.move(unit, x, y, z, min_gap, queue)`
@@ -104,7 +108,7 @@ local AbilDB    = require("abilities_db")
 - `Math2D.clamp(v, lo, hi)` / `Math2D.lerp(a, b, t)`
 - `Math2D.extend(x1, y1, x2, y2, dist)` — сдвиг точки по лучу на `dist`
 - `Math2D.angle_to(x1, y1, x2, y2)` — угол в радианах
-- `Math2D.cursor_world(ref_z, fallback_x, fallback_y)` — проекция курсора в мир
+- `Math2D.cursor_world(ref_z, fallback_x, fallback_y)` — точная проекция курсора в мир (использует `Input.GetCursorPos()` + 4 итерации Ньютона-Рафсона по `Render.WorldToScreen`, **НЕ** `ui.GetCursorPosition()`)
 - `Math2D.new_velocity_tracker()` — объект-трекер вектора скорости целей (`:update(unit)`, `:predict(unit, dt)`)
 
 ### `target_selector.lua` (`require("target_selector")`)
@@ -125,6 +129,18 @@ local AbilDB    = require("abilities_db")
 - `Hud.world_circle(wx, wy, wz, radius, r, g, b, a, segments, thickness)` — 3D-круг на земле
 - `Hud.world_badge(wx, wy, wz, text, r, g, b, a)` — бейдж над точкой в мире
 
+### `damage_lib.lua` (`require("damage_lib")`)
+Универсальный data-driven расчёт урона и летала без хардкода (читает `AbilityValues` через `Assets.*`, живые статы, броню, маг. резист, спелл-амп, криты и сейвы):
+- `DamageLib.get_spell_amp(caster)` / `get_onhit_armor_reduction(caster, target)` / `get_guaranteed_crit_mult(caster)` / `get_spell_proc_bonus(caster, target_mode)`
+- `DamageLib.armor_mult(armor)` / `get_effective_hp(target)` / `is_save_immune(target)` / `has_aegis(target)` / `is_invisible(unit)`
+- `DamageLib.calc_damage(raw_dmg, dtype, caster, target, opts)` — точный урон с учётом типа (`DAMAGE_TYPE_PHYSICAL/MAGICAL/PURE`)
+- `DamageLib.get_item_spec(it, caster, target)` / `get_ability_spec(ab, caster, target)`
+- `DamageLib.find_lethal_action(caster, target, opts)` / `cast_action(caster, target, act, opts)`
+
+### `floating_panel.lua` (`require("floating_panel")`)
+Шаблон перетаскиваемого HUD-окна в стиле меню Shadowraze (Liquid Glass, блюр, сетки иконок, кнопка закрытия и хоткей):
+- `FloatingPanel.new(opts)` — создаёт перетаскиваемую панель (`name`, `title`, `x`, `y`, `w`, `h`, `hotkey`, `default_open`, рендер + обработка кликов/перетаскивания)
+
 ---
 
 ## 3. Callbacks & Events
@@ -136,7 +152,7 @@ Callbacks.OnDraw(function() end)   -- вызывается каждый кадр
 Callbacks.Add(event_name, fn)      -- подписка на событие
 ```
 
-### `events` (Neverlose-стиль)
+### `events` (перехватываемые события)
 ```lua
 events.prepare_unit_orders:Set(function(e) end) -- перехват/модификация приказов (можно вернуть/выставить e.block = true)
 events.<event_name>:Set(fn)
@@ -156,33 +172,85 @@ events.<event_name>:Unset(fn)
 
 Все значения контролов автоматически сохраняются и восстанавливаются системой конфигов (включая загрузку конфига до подгрузки скрипта).
 
-### Neverlose-стиль (`ui`)
+### Современный стиль (`ui`)
+
+Каждая группа (`grp`) рисуется отдельной компактной карточкой с 1px разделителями строк.
+
 ```lua
--- Создание/привязка к существующей вкладке ("Hero", "Visuals", "World", "Misc") или своей вкладке в доке:
+-- Создание/привязка к существующей вкладке ("Hero", "Visuals", "Changer", "Misc") или своей вкладке в доке:
 local grp = ui.create("Hero", "Invoker", "Combo")
 local tab = ui.AddTab("Custom Tab")
-local sub = tab:AddGroup("Main")
+-- Опционально можно задать колонку: ui.GroupColumn.kAuto (-1), ui.GroupColumn.kLeft (0), ui.GroupColumn.kRight (1)
+local left_card  = tab:AddGroup("Основные", ui.GroupColumn.kLeft)
+local right_card = tab:AddGroup("Визуалы", ui.GroupColumn.kRight)
 
-local sw   = grp:Switch("Enable", false)                      -- alias: AddToggle / switch
-local sl   = grp:Slider("Radius", 100, 1200, 600, 1.0, "%d")  -- alias: AddSlider / slider
-local cmb  = grp:Combo("Mode", { "A", "B", "C" }, 0)          -- alias: AddCombo / combo
-local mcmb = grp:MultiCombo("Targets", { "Carry", "Support" })-- alias: AddMultiCombo / multicombo
-local lst  = grp:AddList("Priority", { "Low", "High" }, 0)    -- alias: list
+-- Виджеты группы (последний опциональный аргумент icon — имя героя/скилла/предмета или хендл render.LoadImage):
+local sw   = grp:Switch("Enable", false, "item_blink")                  -- alias: AddToggle / switch
+local sl   = grp:Slider("Radius", 100, 1200, 600, 1.0, "%d")            -- alias: AddSlider / slider (дробный scale: 0.1 / 0.01)
+local cmb  = grp:Combo("Mode", { "A", "B", "C" }, 0)                    -- alias: AddCombo / combo
+local mcmb = grp:MultiCombo("Targets", { "Carry", "Support" })          -- alias: AddMultiCombo / multicombo
+local lst  = grp:AddList("Priority", { "Low", "High" }, 0)              -- alias: list
 local mlst = grp:AddMultiList("Flags", { "F1", "F2" })
-local txt  = grp:AddTextBox("Tag", "default")                 -- alias: input
-local lbl  = grp:Label("Info text")                           -- alias: AddLabel / label
-local btn  = grp:Button("Action", function() end)             -- alias: AddButton / button
-local key  = grp:Bind("Combo Key", 0)                         -- alias: AddHotkey / hotkey
-local col  = grp:AddColorPicker("Color", Color(255, 80, 80, 255)) -- alias: color_picker
-```
-Методы `UIVar`:
-- `var:Get()` / `var:GetValue()` / `var:GetRawValue()`
-- `var:SetValue(v)` / `var:SetRawValue(v)`
-- `var:AddCallback(fn, call_now)` / `var:RemoveCallback(fn)`
-- `var:AddColorPicker(default_color)` (прикрепить color picker к чекбоксу)
-- `var:AddGroup("Sub")` / `var:Chip("SubToggle", default_bool)`
+local txt  = grp:InputBox("Tag", "default")                             -- alias: AddTextBox / TextBox / input
+local lbl  = grp:Label("Info text")                                     -- alias: AddLabel / label
+local btn  = grp:Button("Action", function() end)                       -- alias: AddButton / button
+local key  = grp:Bind("Combo Key", 0)                                   -- alias: AddHotkey / hotkey
+local col  = grp:ColorPicker("Color", Color(255, 80, 80, 255))          -- alias: AddColorPicker / color_picker
 
-Утилиты `ui`: `ui.Find(...)` / `ui.find(...)` / `ui.Lookup(...)`, `ui.GetActiveBinds()`, `ui.GetAlpha()`, `ui.GetScale()`, `ui.Scaled(v)`, `ui.GetPosition()`, `ui.GetSize()`, `ui.GetCursorPosition()`, `ui.GetStyle()`, `ui.GetStyleColor()`.
+-- Inline мультиселект иконок (до 6 иконок в одну строку "Label [icon][icon]", больше 6 — сетка с All/None):
+local ms   = grp:MultiSelect("Предметы", {
+    { "item_blink", true },
+    { "item_sheepstick", true },
+    { "item_abyssal_blade", false },
+}, false) -- alias: AddMultiSelect / AddIconGrid; 3-й аргумент expanded (true = полная сетка, false = компактная строка)
+
+-- Картинка в карточке (имя иконки Dota или хендл из render.LoadImage):
+local img  = grp:AddImage("npc_dota_hero_invoker", 64, 36)
+```
+
+#### Иконки перед названием, шестерёнки (Gear) и цепочки методов `UIVar`
+Все сеттеры возвращают `self`, поэтому их можно чейнить прямо при создании:
+
+```lua
+-- Иконка перед названием (герой "npc_dota_hero_*", скилл "pudge_meat_hook", предмет "item_blink" или render.LoadImage):
+local sw_blink = grp:Switch("Авто Blink", true)
+    :Icon("item_blink")                    -- alias: :Image(...)
+    :ToolTip("Автоматически прыгает к цели")
+
+-- Встроенный ColorPicker справа от чекбокса:
+local sw_esp = grp:Switch("Рисовать радиус", true)
+local col_esp = sw_esp:ColorPicker("Цвет", Color(120, 210, 255, 220)) -- alias: :AddColorPicker(...)
+
+-- Всплывающая шестерёнка (Gear popup) с дочерними контролами прямо на виджете:
+local gear = sw_esp:Gear("Настройки радиуса") -- alias: :AddGroup(...)
+local sl_thick = gear:Slider("Толщина", 1, 5, 2, 1.0, "%d px")
+local sw_pulse = gear:Switch("Пульсация", false)
+```
+
+Полный список методов и свойств `UIVar`:
+- Чтение/запись: `var:Get()` / `var:GetValue()` / `var.value`, `var:Set(v)` / `var:SetValue(v)` / `var.value = v`
+- Override (raw): `var:GetRawValue()`, `var:SetRawValue(v)` / `var.raw_value`
+- Тип и метаданные: `var.type` (`"checkbox"`, `"slider_int"`, `"slider_float"`, `"combo"`, `"multicombo"`, `"keybind"`, `"color_picker"`, `"icon_grid"`, `"image"`, ...)
+- Иконка перед названием: `var:Icon(name_or_image)` / `var:Image(name_or_image)`
+- Подсказка при наведении: `var:ToolTip("текст")` (без аргументов возвращает текущую строку)
+- Состояние и видимость: `var:Disabled(bool)` / `var:Visible(bool)` (без аргументов возвращает `bool`)
+- Размещение в одну строку: `var:SameLine(bool)`
+- Обновление списка опций в рантайме (Combo / MultiCombo / MultiSelect): `var:Update(new_items_table)`
+- Шестерёнка / цвет / чип: `var:Gear("Name")` / `var:AddGroup("Name")`, `var:ColorPicker(default_col)` / `var:AddColorPicker(default_col)`, `var:Chip("SubToggle", default_bool)`
+- Сериализация: `var:Export()` (возвращает JSON-строку) / `var:Import(json_str)`
+- Коллбэки: `var:AddCallback(fn, call_now)` / `var:RemoveCallback(fn)`
+- Проверка элемента в `MultiSelect` / `MultiCombo`: `ms:Get("item_blink")` -> `boolean`
+
+#### Сохранение настроек скрипта в конфигах (Configs)
+Все виджеты `ui.*` и `Menu.*` (включая дочерние контролы внутри `:Gear()` / `:Chip()` и прикреплённые `:ColorPicker()`) **автоматически** сохраняются и загружаются вместе с конфигом во вкладке **Configs** (`+ Config` / `commit` / `load`) — писать свой сейвер не нужно:
+- Список активных скриптов и значения всех их виджетов сохраняются для официальных и пользовательских `.lua` скриптов.
+- Динамические списки (`Combo` / `MultiCombo` / `MultiSelect`), обновляемые в рантайме через `var:Update(...)`, сохраняют и подтягивают значения по имени элемента.
+- При загрузке конфига у виджетов автоматически вызываются подписанные `:AddCallback(fn)`.
+
+Утилиты и енумы `ui`:
+- `ui.GroupColumn`: `kAuto`, `kLeft`, `kRight`
+- `ui.ScaleType`: `kMenu`, `kWindows`, `kEsp`
+- `ui.Find(...)` / `ui.find(...)` / `ui.Lookup(...)`, `ui.GetActiveBinds()`, `ui.GetAlpha()`, `ui.GetScale()`, `ui.Scaled(v)`, `ui.GetPosition()`, `ui.GetSize()`, `ui.GetCursorPosition()`, `ui.GetStyle()`, `ui.GetStyleColor(name)`.
 
 ### Классический стиль (`Menu` / `GUI`)
 ```lua
@@ -223,7 +291,7 @@ grid:IsEnabled("item_blink") / grid:SetEnabled("item_blink", true)
 - `Creeps.GetAll()` — `{ name, index, handle, is_alive, hp, max_hp, armor, team, is_enemy, is_neutral, is_courier, is_roshan, deniable, hits_to_kill, bounty_min, bounty_max, origin_x/y/z, screen_x/y, screen_visible }`
 - `Wards.GetAll()` — `{ is_sentry, is_enemy, team, origin_x/y/z, screen_x/y, screen_visible }`
 - `Runes.GetAll()` — `{ name, index, handle, origin_x/y/z, screen_x/y, screen_visible }`
-- `Trees.GetNearby(radius)` — `{ index, handle, origin_x/y/z, distance }`
+- `Trees.GetNearby(x, y, radius)` — статические деревья карты `{ index, handle, origin_x/y/z, distance }`. Временные деревья (Furion Sprout, Hoodwink Acorn Shot) искать через `entity.ListByDesignerName("dota_temp_tree")` и рубить через `Order.CastTargetTree(item_idx, ent:EntIndex(), false, me.index)`!
 - `Thinkers.GetAll()` — `{ index, modifier, spell, radius, delay, time_left, team, is_enemy, origin_x/y/z, screen_x/y, screen_visible }`
 - `Particles.GetAll()` — `{ id, name, entity, has_coords, origin_x/y/z, screen_x/y, screen_visible, age, has_cp1, cp1_x/y/z, is_arrival, label, category, destroyed }`
 
@@ -245,23 +313,43 @@ Order.DropItem(item_idx, x, y, z, queue)
 Order.PickupItem(item_entity_idx, queue)
 Order.PickupRune(rune_entity_idx, queue)
 Order.MoveItem(item_idx, target_slot, queue)
+Order.BuyItem(item_id, unit_idx)
 Order.Stop(unit_idx)
 ```
+
+### Humanizer (`Humanizer` / `humanizer`)
+Ядро хуманайзера ордеров и виртуальной реплей-камеры (`1134` фрустум-трапеция на земле + плавный довод курсора + очередь/дедупликация скриптовых приказов):
+- `Humanizer.IsEnabled()` / `Humanizer.SetEnabled(bool)` — включить/выключить хуманайзер.
+- `Humanizer.IsDebugDraw()` / `Humanizer.SetDebugDraw(bool)` — рисовать трапецию фрустума `1134`, центр виртуальной камеры и виртуальный курсор.
+- `Humanizer.GetOrderDelay()` -> `min_ms, max_ms` / `Humanizer.SetOrderDelay(min_ms, max_ms)` — рандомный интервал между скриптовыми приказами.
+- `Humanizer.GetCameraSpeed()` / `Humanizer.SetCameraSpeed(units_per_sec)` — скорость плавного сдвига виртуальной камеры `1134`.
+- `Humanizer.GetCursorSpeed()` / `Humanizer.SetCursorSpeed(units_per_sec)` — скорость довода виртуального курсора.
+- `Humanizer.GetBlockOffscreen()` / `Humanizer.SetBlockOffscreen(bool)` — блокировать скриптовые приказы за пределами трапеции `1134`.
+- `Humanizer.GetHideScriptEffects()` / `Humanizer.SetHideScriptEffects(bool)` — скрывать клик-кольца на скриптовых ордерах.
+- `Humanizer.SetFrustumShape(hw_bot, hw_top, dy_bot, dy_top)` — кастомная геометрия трапеции фрустума.
+- `Humanizer.GetCameraPos()` -> `x, y` (виртуальная камера) / `Humanizer.GetRealCameraPos()` -> `x, y` (реальная камера).
+- `Humanizer.SetCameraPos(x, y)` / `Humanizer.SetCameraTarget(x, y)` — мгновенно или плавно сместить виртуальную камеру.
+- `Humanizer.GetCursorPos()` -> `x, y, z` / `Humanizer.SetCursorPos(x, y, z)` / `Humanizer.SetCursorTarget(x, y, z)`.
+- `Humanizer.PushOrderTarget(x, y, z)` — уведомить хуманайзер о целевой точке (сдвинет виртуальную камеру только если точка вышла за трапецию `1134`).
+- `Humanizer.GetFrustumCorners([z])` -> `{ {x,y,z}, {x,y,z}, {x,y,z}, {x,y,z} }` (4 угла трапеции: `BL, TL, TR, BR`).
+- `Humanizer.IsPointInFrustum(x, y [, margin])` -> `boolean`.
+- `Humanizer.CanIssueOrder()` -> `boolean` (готово ли окно задержки для следующего скриптового ордера).
+- `Humanizer.GetStats()` -> `{ total_orders, script_orders, queued_orders, dedup_dropped, offscreen_blocked, usercmds_spoofed, pending_queue }`.
 
 ---
 
 ## 7. Рендеринг (`Render` и `render`)
 
 ### Простой API (`Render`)
-- `Render.Text(x, y, text, r, g, b, a)` / `Render.TextOutlined(x, y, text, r, g, b, a)`
+- `Render.Text(text, x, y, size, r, g, b, a)` / `Render.TextOutlined(text, x, y, size, r, g, b, a)`
 - `Render.Line(x1, y1, x2, y2, r, g, b, a, thickness)`
-- `Render.Rect(x, y, w, h, r, g, b, a, rounding, thickness)` / `Render.RectFilled(...)`
-- `Render.Circle(x, y, radius, r, g, b, a, thickness)` / `Render.CircleFilled(...)`
+- `Render.Rect(x1, y1, x2, y2, r, g, b, a, rounding, thickness)` / `Render.RectFilled(x1, y1, x2, y2, r, g, b, a, rounding)`
+- `Render.Circle(x, y, radius, r, g, b, a, thickness)` / `Render.CircleFilled(x, y, radius, r, g, b, a)`
 - `Render.WorldToScreen(x, y, z)` -> `sx, sy, visible`
 - `Render.ScreenSize()` -> `w, h`
 - `Render.TextSize(text)` -> `w, h`
 
-### Расширенный API (`render`, Neverlose-стиль)
+### Расширенный API (`render`)
 - Примитивы: `DrawLine`, `DrawBezier`, `DrawRect`, `DrawRectOutline`, `DrawRectShadow`, `DrawRectGradient`, `DrawRectGlow`, `DrawWindow`, `DrawWindowShadow`, `DrawCircle`, `DrawCircleOutline`, `DrawCircleGradient`, `DrawEllipse`, `DrawEllipseOutline`, `DrawTriangle`, `DrawTriangleOutline`, `DrawPoly`, `DrawPolyline`
 - Текст и шрифты: `LoadFont`, `DrawText`, `DrawTextEx`, `MeasureText`, `MeasureTextEx`
 - Изображения и шейдеры: `LoadImage`, `LoadImageRGBA`, `LoadImageFromFile`, `DrawImage`, `CreateShader`, `DrawShader` (`shader:IsValid()`, `:IsReady()`, `:GetError()`, `:Release()`)
@@ -279,7 +367,8 @@ Order.Stop(unit_idx)
 - **`schema`**: `GetSize`, `GetName`, `GetFieldOffset`, `GetFields`
 - **`memory`**: `CreateInterface`, `FindPattern`, `ResolveRelative`, `GetModuleBase`, `RttiName`, `SetProtection`
 - **`particles`**: `Create`, `SetControlPoint`, `SetEntity`, `SetTransform`, `SetPath`, `Destroy`, `IsValid`, `GetName`, `particles.Attachment` (`ABSORIGIN`, `WORLDORIGIN`, `ABSORIGIN_FOLLOW`, `OVERHEAD_FOLLOW`, `ROOTBONE_FOLLOW`)
-- **`Panorama`**: `GetContextCount`, `GetContextInfo`, `GetContexts`, `FindContext`, `SearchPanels`, `SearchFromRoot`, `GetRootChildren`, `TagContext`, `TagPanel`, `TagPanelsWithClass`, `TagAll`, `RemoveTags`
+- **`Panorama`**: `GetContextCount`, `GetContextInfo`, `GetContexts`, `FindContext`, `SearchPanels`, `SearchFromRoot`, `GetRootChildren`, `GetPanelRect(ctx, id)`, `GetPanelProp(ctx, id, prop)`, `SetPanelPropNumber(ctx, id, prop, val)`, `SetPanelPropString(ctx, id, prop, val)`, `GetPanelAttrString(ctx, id, attr)`, `GetPanelAttrInt(ctx, id, attr, def)`, `HasClass(ctx, id, cls)`, `SetPanelVisible(ctx, id, vis)`, `TagContext`, `TagPanel`, `TagPanelsWithClass`, `TagAll`, `RemoveTags`
+- **`ProfilePlus`**: `GetHeroLevel(hero_id)`, `GetEffectiveHeroLevel(hero_id)`, `SetHeroLevel(hero_id, lvl)`, `GetGlobalHeroLevel()`, `SetAllHeroLevels(lvl)`, `GetHeroTierName(lvl)`, `GetLocalMatchHeroId()`, `MarkDirty()`, `SaveConfig()`
 
 ---
 
@@ -321,6 +410,8 @@ Order.Stop(unit_idx)
 8. `clear_console_logs` — очистить `F11` консоль перед тестом
 9. `get_match_snapshot` — живой снимок матча (`GameSnapshot`: герой, абилки, предметы, враги, Рошан, крипы)
 10. `list_lua_menu_items` — список всех активных контролов `LuaMenuManager`
+
+Также доступен MCP-ресурс `shadowraze://lua-api` (отдаёт актуальный `C:\shadowraze\dota\LUA_API.md` напрямую).
 
 ---
 
