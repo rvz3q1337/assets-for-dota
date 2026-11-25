@@ -159,16 +159,16 @@
       "size": 25089
     },
     {
-      "path": "dota/LUA_API.md",
-      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/dota/LUA_API.md",
-      "sha256": "55e591919016c939fb059c9eaca830388c6b0b7d43ca5c9b05a021d84582d412",
-      "size": 35703
-    },
-    {
       "path": "dota/scripts/libs/damage_lib.lua",
       "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/dota/scripts/libs/damage_lib.lua",
       "sha256": "a8f7957ed972c601262c2491b4a56446d273a75b17786eca40e6e782ae9b5e8b",
       "size": 23277
+    },
+    {
+      "path": "dota/LUA_API.md",
+      "url": "https://raw.githubusercontent.com/rvz3q1337/assets-for-dota/main/dota/LUA_API.md",
+      "sha256": "a42d5036de5fa9732ed63b38fa0aca9e724b0bb3ca7894285022559228a456af",
+      "size": 36101
     }
   ]
 }

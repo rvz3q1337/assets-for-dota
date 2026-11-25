@@ -177,9 +177,14 @@ events.<event_name>:Unset(fn)
 Каждая группа (`grp`) рисуется отдельной компактной карточкой с 1px разделителями строк.
 
 ```lua
--- Создание/привязка к существующей вкладке ("Hero", "Visuals", "Changer", "Misc") или своей вкладке в доке:
-local grp = ui.create("Hero", "Invoker", "Combo")
-local tab = ui.AddTab("Custom Tab")
+-- Базовые доки (6 шт.): "Hero", "General", "Visuals", "Changer", "Misc", "Configs"
+-- (можно также передать своё имя дока — появится отдельная вкладка в доке).
+-- 4-аргументный синтаксис: ui.create(dock_tab, sidebar_item, subtab, group_card)
+local grp_gen = ui.create("General", "My Script", "Main", "Settings")
+local grp_vis = ui.create("Visuals", "My Overlay", "Main", "ESP")
+local grp_chg = ui.create("Changer", "My Skin", "Main", "Options")
+local grp     = ui.create("Hero", "Invoker", "Combo")
+local tab     = ui.AddTab("Custom Tab")
 -- Опционально можно задать колонку: ui.GroupColumn.kAuto (-1), ui.GroupColumn.kLeft (0), ui.GroupColumn.kRight (1)
 local left_card  = tab:AddGroup("Основные", ui.GroupColumn.kLeft)
 local right_card = tab:AddGroup("Визуалы", ui.GroupColumn.kRight)
@@ -428,7 +433,7 @@ local Orders    = require("orders")
 local Math2D    = require("math2d")
 local Hud       = require("hud")
 
-local grp = ui.create("Misc", "Main", "Quick Hex")
+local grp = ui.create("General", "Quick Hex", "Main", "Quick Hex")
 local sw  = grp:Switch("Enable Quick Hex", false)
 local key = grp:Bind("Hold Key", 0)
 local rng = grp:Slider("Max Range", 300, 1000, 800, 1.0, "%d")
